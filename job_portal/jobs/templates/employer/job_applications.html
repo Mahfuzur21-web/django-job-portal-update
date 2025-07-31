@@ -1,0 +1,33 @@
+<h2>Applications for Job: {{ job.title }}</h2>
+<table border="1">
+    <tr>
+        <th>Applicant</th>
+        <th>Resume</th>
+        <th>Cover Letter</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    {% for app in applications %}
+    <tr>
+        <td>{{ app.applicant.username }}</td>
+        <td><a href="{{ app.resume.url }}" download>Download</a></td>
+        <td>{{ app.cover_letter }}</td>
+        <td>
+            <span style="color:
+                {% if app.status == 'approved' %}green
+                {% elif app.status == 'rejected' %}red
+                {% else %}gray
+                {% endif %}
+            ">{{ app.status|capfirst }}</span>
+        </td>
+        <td>
+            {% if app.status == 'pending' %}
+                <a href="{% url 'update_application_status' app.id 'approved' %}">Approve</a> |
+                <a href="{% url 'update_application_status' app.id 'rejected' %}">Reject</a>
+            {% else %}
+                <em>No action</em>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>

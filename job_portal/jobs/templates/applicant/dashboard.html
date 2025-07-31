@@ -1,0 +1,33 @@
+<h2>Your Applications</h2>
+
+<form method="get">
+    <label>Filter by Status:</label>
+    <select name="status" onchange="this.form.submit()">
+        <option value="">All</option>
+        <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+        <option value="approved" {% if status_filter == 'approved' %}selected{% endif %}>Approved</option>
+        <option value="rejected" {% if status_filter == 'rejected' %}selected{% endif %}>Rejected</option>
+    </select>
+</form>
+
+<table border="1">
+    <tr>
+        <th>Job</th>
+        <th>Resume</th>
+        <th>Cover Letter</th>
+        <th>Status</th>
+    </tr>
+    {% for app in applications %}
+    <tr>
+        <td>{{ app.job.title }}</td>
+        <td><a href="{{ app.resume.url }}">Resume</a></td>
+        <td>{{ app.cover_letter }}</td>
+        <td style="color:
+            {% if app.status == 'approved' %}green
+            {% elif app.status == 'rejected' %}red
+            {% else %}gray
+            {% endif %}
+        ">{{ app.status|capfirst }}</td>
+    </tr>
+    {% endfor %}
+</table>
